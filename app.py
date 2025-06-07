@@ -1,239 +1,177 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "provenance": [],
-      "authorship_tag": "ABX9TyO5uiIcNgnUgkzqpR12LyeU",
-      "include_colab_link": true
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {
-        "id": "view-in-github",
-        "colab_type": "text"
-      },
-      "source": [
-        "<a href=\"https://colab.research.google.com/github/BimantoroSetyo/UAS-MI/blob/main/UAS_MI.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "!pip install streamlit pandas plotly pyngrok"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "N9LQfVWS-ip1",
-        "outputId": "3d0a3237-e6a6-4a54-9750-bb6fa44b26d9"
-      },
-      "execution_count": 13,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Requirement already satisfied: streamlit in /usr/local/lib/python3.11/dist-packages (1.45.1)\n",
-            "Requirement already satisfied: pandas in /usr/local/lib/python3.11/dist-packages (2.2.2)\n",
-            "Requirement already satisfied: plotly in /usr/local/lib/python3.11/dist-packages (5.24.1)\n",
-            "Requirement already satisfied: pyngrok in /usr/local/lib/python3.11/dist-packages (7.2.11)\n",
-            "Requirement already satisfied: altair<6,>=4.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (5.5.0)\n",
-            "Requirement already satisfied: blinker<2,>=1.5.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (1.9.0)\n",
-            "Requirement already satisfied: cachetools<6,>=4.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (5.5.2)\n",
-            "Requirement already satisfied: click<9,>=7.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (8.2.1)\n",
-            "Requirement already satisfied: numpy<3,>=1.23 in /usr/local/lib/python3.11/dist-packages (from streamlit) (2.0.2)\n",
-            "Requirement already satisfied: packaging<25,>=20 in /usr/local/lib/python3.11/dist-packages (from streamlit) (24.2)\n",
-            "Requirement already satisfied: pillow<12,>=7.1.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (11.2.1)\n",
-            "Requirement already satisfied: protobuf<7,>=3.20 in /usr/local/lib/python3.11/dist-packages (from streamlit) (5.29.5)\n",
-            "Requirement already satisfied: pyarrow>=7.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (18.1.0)\n",
-            "Requirement already satisfied: requests<3,>=2.27 in /usr/local/lib/python3.11/dist-packages (from streamlit) (2.32.3)\n",
-            "Requirement already satisfied: tenacity<10,>=8.1.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (9.1.2)\n",
-            "Requirement already satisfied: toml<2,>=0.10.1 in /usr/local/lib/python3.11/dist-packages (from streamlit) (0.10.2)\n",
-            "Requirement already satisfied: typing-extensions<5,>=4.4.0 in /usr/local/lib/python3.11/dist-packages (from streamlit) (4.14.0)\n",
-            "Requirement already satisfied: watchdog<7,>=2.1.5 in /usr/local/lib/python3.11/dist-packages (from streamlit) (6.0.0)\n",
-            "Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in /usr/local/lib/python3.11/dist-packages (from streamlit) (3.1.44)\n",
-            "Requirement already satisfied: pydeck<1,>=0.8.0b4 in /usr/local/lib/python3.11/dist-packages (from streamlit) (0.9.1)\n",
-            "Requirement already satisfied: tornado<7,>=6.0.3 in /usr/local/lib/python3.11/dist-packages (from streamlit) (6.4.2)\n",
-            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.11/dist-packages (from pandas) (2.9.0.post0)\n",
-            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.11/dist-packages (from pandas) (2025.2)\n",
-            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.11/dist-packages (from pandas) (2025.2)\n",
-            "Requirement already satisfied: PyYAML>=5.1 in /usr/local/lib/python3.11/dist-packages (from pyngrok) (6.0.2)\n",
-            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.11/dist-packages (from altair<6,>=4.0->streamlit) (3.1.6)\n",
-            "Requirement already satisfied: jsonschema>=3.0 in /usr/local/lib/python3.11/dist-packages (from altair<6,>=4.0->streamlit) (4.24.0)\n",
-            "Requirement already satisfied: narwhals>=1.14.2 in /usr/local/lib/python3.11/dist-packages (from altair<6,>=4.0->streamlit) (1.41.0)\n",
-            "Requirement already satisfied: gitdb<5,>=4.0.1 in /usr/local/lib/python3.11/dist-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.12)\n",
-            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.11/dist-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)\n",
-            "Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.27->streamlit) (3.4.2)\n",
-            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.27->streamlit) (3.10)\n",
-            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.27->streamlit) (2.4.0)\n",
-            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.27->streamlit) (2025.4.26)\n",
-            "Requirement already satisfied: smmap<6,>=3.0.1 in /usr/local/lib/python3.11/dist-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit) (5.0.2)\n",
-            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.11/dist-packages (from jinja2->altair<6,>=4.0->streamlit) (3.0.2)\n",
-            "Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.11/dist-packages (from jsonschema>=3.0->altair<6,>=4.0->streamlit) (25.3.0)\n",
-            "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.11/dist-packages (from jsonschema>=3.0->altair<6,>=4.0->streamlit) (2025.4.1)\n",
-            "Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.11/dist-packages (from jsonschema>=3.0->altair<6,>=4.0->streamlit) (0.36.2)\n",
-            "Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.11/dist-packages (from jsonschema>=3.0->altair<6,>=4.0->streamlit) (0.25.1)\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "%%writefile app.py\n",
-        "\n",
-        "import streamlit as st\n",
-        "import pandas as pd\n",
-        "import plotly.express as px\n",
-        "\n",
-        "# --- KONFIGURASI HALAMAN ---\n",
-        "st.set_page_config(\n",
-        "    page_title=\"Media Intelligence Dashboard\",\n",
-        "    page_icon=\"📊\",\n",
-        "    layout=\"wide\"\n",
-        ")\n",
-        "\n",
-        "# --- FUNGSI UNTUK MEMUAT DAN MEMBERSIHKAN DATA ---\n",
-        "@st.cache_data\n",
-        "def load_data(file_path='SwayTea.csv'):\n",
-        "    \"\"\"\n",
-        "    Memuat data dari file CSV.\n",
-        "    Melakukan pembersihan dan transformasi data dasar.\n",
-        "    \"\"\"\n",
-        "    df = pd.read_csv(file_path)\n",
-        "\n",
-        "    # --- Pembersihan & Transformasi Data ---\n",
-        "    df['Date'] = pd.to_datetime(df['Date'])\n",
-        "    try:\n",
-        "        split_cols = df['Influencer_Brand'].str.split('|', expand=True)\n",
-        "        df['Influencer'] = split_cols[0].str.strip()\n",
-        "        df['Brand'] = split_cols[1].str.strip()\n",
-        "    except Exception as e:\n",
-        "        df['Influencer'] = 'N/A'\n",
-        "        df['Brand'] = 'N/A'\n",
-        "        st.warning(f\"Could not split 'Influencer_Brand' column. Error: {e}\")\n",
-        "    df.drop(columns=['Influencer_Brand'], inplace=True)\n",
-        "\n",
-        "    return df\n",
-        "\n",
-        "# --- UI: SIDEBAR UNTUK FILTER ---\n",
-        "# Di versi ini, kita tidak menggunakan fitur upload karena data sudah ada di repo.\n",
-        "# Jika Anda ingin tetap ada, Anda bisa menambahkan kembali logika upload file.\n",
-        "st.sidebar.header(\"📊 Filter Dashboard\")\n",
-        "\n",
-        "# Memuat data\n",
-        "df = load_data()\n",
-        "\n",
-        "# Filter berdasarkan rentang tanggal\n",
-        "min_date = df['Date'].min().date()\n",
-        "max_date = df['Date'].max().date()\n",
-        "start_date, end_date = st.sidebar.date_input(\n",
-        "    \"Pilih rentang tanggal:\",\n",
-        "    value=(min_date, max_date),\n",
-        "    min_value=min_date,\n",
-        "    max_value=max_date\n",
-        ")\n",
-        "start_date = pd.to_datetime(start_date)\n",
-        "end_date = pd.to_datetime(end_date)\n",
-        "\n",
-        "# Filter lainnya\n",
-        "selected_platforms = st.sidebar.multiselect(\"Pilih Platform:\", options=df['Platform'].unique(), default=df['Platform'].unique())\n",
-        "selected_sentiments = st.sidebar.multiselect(\"Pilih Sentimen:\", options=df['Sentiment'].unique(), default=df['Sentiment'].unique())\n",
-        "selected_locations = st.sidebar.multiselect(\"Pilih Lokasi:\", options=df['Location'].unique(), default=df['Location'].unique())\n",
-        "\n",
-        "# --- PENERAPAN FILTER KE DATAFRAME ---\n",
-        "df_filtered = df[\n",
-        "    (df['Date'] >= start_date) & (df['Date'] <= end_date) &\n",
-        "    (df['Platform'].isin(selected_platforms)) &\n",
-        "    (df['Sentiment'].isin(selected_sentiments)) &\n",
-        "    (df['Location'].isin(selected_locations))\n",
-        "]\n",
-        "\n",
-        "# --- UI: DASHBOARD UTAMA ---\n",
-        "st.title(\"📊 Interactive Media Intelligence Dashboard\")\n",
-        "st.markdown(\"Analisis Performa Kampanye SwayTea di Berbagai Media Sosial\")\n",
-        "\n",
-        "if df_filtered.empty:\n",
-        "    st.warning(\"Tidak ada data yang cocok dengan filter yang Anda pilih.\")\n",
-        "else:\n",
-        "    # --- Ringkasan Metrik Utama (KPIs) ---\n",
-        "    total_posts = len(df_filtered)\n",
-        "    total_engagements = df_filtered['Engagements'].sum()\n",
-        "    avg_engagements = df_filtered['Engagements'].mean()\n",
-        "\n",
-        "    col1, col2, col3 = st.columns(3)\n",
-        "    col1.metric(\"Total Posts\", f\"{total_posts:,}\")\n",
-        "    col2.metric(\"Total Engagements\", f\"{total_engagements:,.0f}\")\n",
-        "    col3.metric(\"Rata-rata Engagement/Post\", f\"{avg_engagements:,.2f}\")\n",
-        "\n",
-        "    st.markdown(\"---\")\n",
-        "\n",
-        "    # --- Visualisasi ---\n",
-        "    tab1, tab2, tab3 = st.tabs([\"📈 Analisis Umum\", \"🧑‍💻 Analisis Detail\", \"📄 Data Mentah\"])\n",
-        "\n",
-        "    with tab1:\n",
-        "        st.subheader(\"Tren Engagement dari Waktu ke Waktu\")\n",
-        "        engagement_over_time = df_filtered.groupby('Date')['Engagements'].sum().reset_index()\n",
-        "        fig_time = px.line(engagement_over_time, x='Date', y='Engagements', title='Total Engagement Harian')\n",
-        "        st.plotly_chart(fig_time, use_container_width=True)\n",
-        "\n",
-        "        col1, col2 = st.columns(2)\n",
-        "        with col1:\n",
-        "            st.subheader(\"Distribusi Sentimen\")\n",
-        "            sentiment_dist = df_filtered['Sentiment'].value_counts().reset_index()\n",
-        "            fig_pie = px.pie(sentiment_dist, names='Sentiment', values='count', title='Proporsi Sentimen Post', hole=0.3, color_discrete_map={'Positive':'#2ca02c', 'Neutral':'#ff7f0e', 'Negative':'#d62728'})\n",
-        "            st.plotly_chart(fig_pie, use_container_width=True)\n",
-        "        with col2:\n",
-        "            st.subheader(\"Engagement per Platform\")\n",
-        "            platform_engagement = df_filtered.groupby('Platform')['Engagements'].sum().sort_values(ascending=False).reset_index()\n",
-        "            fig_bar_platform = px.bar(platform_engagement, x='Platform', y='Engagements', title='Total Engagement Berdasarkan Platform', text_auto=True)\n",
-        "            st.plotly_chart(fig_bar_platform, use_container_width=True)\n",
-        "\n",
-        "    with tab2:\n",
-        "        col1, col2 = st.columns(2)\n",
-        "        with col1:\n",
-        "            st.subheader(\"Top Influencer berdasarkan Engagement\")\n",
-        "            influencer_engagement = df_filtered.groupby('Influencer')['Engagements'].sum().sort_values(ascending=True).reset_index()\n",
-        "            fig_influencer = px.bar(influencer_engagement.tail(10), y='Influencer', x='Engagements', orientation='h', title='Top 10 Influencer', text_auto='.2s')\n",
-        "            st.plotly_chart(fig_influencer, use_container_width=True)\n",
-        "        with col2:\n",
-        "            st.subheader(\"Engagement per Tipe Post\")\n",
-        "            post_type_engagement = df_filtered.groupby('Post_Type')['Engagements'].sum().sort_values(ascending=False).reset_index()\n",
-        "            fig_post_type = px.bar(post_type_engagement, x='Post_Type', y='Engagements', title='Total Engagement Berdasarkan Tipe Post', text_auto='.2s')\n",
-        "            st.plotly_chart(fig_post_type, use_container_width=True)\n",
-        "\n",
-        "    with tab3:\n",
-        "        st.subheader(\"Data Mentah Sesuai Filter\")\n",
-        "        st.dataframe(df_filtered)"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "3mUzrhU3_E_P",
-        "outputId": "83205bc7-c954-41ff-e0fd-61bfa183b499"
-      },
-      "execution_count": 14,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Overwriting app.py\n"
-          ]
-        }
-      ]
-    }
-  ]
-}
+# =================================================================
+# KODE LENGKAP UNTUK APLIKASI MEDIA INTELLIGENCE DASHBOARD
+# File: app.py
+# =================================================================
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# --- KONFIGURASI HALAMAN ---
+# Mengatur konfigurasi halaman Streamlit. 'wide' membuat layout menggunakan seluruh lebar layar.
+# Ini harus menjadi perintah Streamlit pertama yang dijalankan.
+st.set_page_config(
+    page_title="Media Intelligence Dashboard | SwayTea",
+    page_icon="📊",
+    layout="wide"
+)
+
+# --- FUNGSI UNTUK MEMUAT DAN MEMBERSIHKAN DATA ---
+# Menggunakan cache agar data tidak perlu dimuat ulang setiap kali ada interaksi dari pengguna.
+# Ini sangat meningkatkan performa aplikasi.
+@st.cache_data
+def load_data(file_path='SwayTea.csv'):
+    """
+    Memuat data dari file CSV yang ada di repositori.
+    Melakukan pembersihan dan transformasi data dasar.
+    """
+    df = pd.read_csv(file_path)
+
+    # --- Pembersihan & Transformasi Data ---
+    # 1. Konversi kolom 'Date' ke format datetime agar bisa difilter berdasarkan rentang waktu.
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # 2. Pisahkan kolom 'Influencer_Brand' menjadi 'Influencer' dan 'Brand'.
+    #    Menggunakan try-except untuk menangani jika ada baris yang formatnya tidak sesuai.
+    try:
+        split_cols = df['Influencer_Brand'].str.split('|', expand=True)
+        df['Influencer'] = split_cols[0].str.strip()
+        df['Brand'] = split_cols[1].str.strip()
+    except Exception as e:
+        # Jika terjadi error, buat kolom kosong agar aplikasi tidak crash.
+        df['Influencer'] = 'N/A'
+        df['Brand'] = 'N/A'
+        st.warning(f"Gagal memisahkan kolom 'Influencer_Brand'. Error: {e}")
+
+    # 3. Hapus kolom asli yang sudah tidak terpakai.
+    df.drop(columns=['Influencer_Brand'], inplace=True)
+    
+    return df
+
+# --- UI: SIDEBAR UNTUK FILTER ---
+# Semua widget filter diletakkan di sidebar agar tampilan utama tetap bersih.
+st.sidebar.header("📊 Filter Dashboard")
+
+# Memuat data menggunakan fungsi yang sudah dibuat.
+# Pesan spinner memberikan feedback visual kepada pengguna saat data dimuat.
+with st.spinner('Memuat data...'):
+    df = load_data()
+
+# Filter berdasarkan rentang tanggal
+st.sidebar.subheader("Filter Tanggal")
+min_date = df['Date'].min().date()
+max_date = df['Date'].max().date()
+start_date, end_date = st.sidebar.date_input(
+    "Pilih rentang tanggal:",
+    value=(min_date, max_date),
+    min_value=min_date,
+    max_value=max_date
+)
+# Konversi kembali ke tipe datetime untuk filtering
+start_date = pd.to_datetime(start_date)
+end_date = pd.to_datetime(end_date)
+
+# Filter lainnya (Platform, Sentimen, Lokasi)
+st.sidebar.subheader("Filter Lainnya")
+selected_platforms = st.sidebar.multiselect(
+    "Pilih Platform:",
+    options=df['Platform'].unique(),
+    default=df['Platform'].unique()
+)
+selected_sentiments = st.sidebar.multiselect(
+    "Pilih Sentimen:",
+    options=df['Sentiment'].unique(),
+    default=df['Sentiment'].unique()
+)
+selected_locations = st.sidebar.multiselect(
+    "Pilih Lokasi:",
+    options=df['Location'].unique(),
+    default=df['Location'].unique()
+)
+
+# --- PENERAPAN FILTER KE DATAFRAME ---
+# Membuat dataframe baru yang sudah difilter sesuai input pengguna.
+df_filtered = df[
+    (df['Date'] >= start_date) & (df['Date'] <= end_date) &
+    (df['Platform'].isin(selected_platforms)) &
+    (df['Sentiment'].isin(selected_sentiments)) &
+    (df['Location'].isin(selected_locations))
+]
+
+# --- UI: DASHBOARD UTAMA ---
+st.title("📊 Interactive Media Intelligence Dashboard")
+st.markdown("Analisis Performa Kampanye **SwayTea** di Berbagai Media Sosial")
+
+# Cek jika dataframe hasil filter kosong untuk mencegah error.
+if df_filtered.empty:
+    st.warning("Tidak ada data yang cocok dengan filter yang Anda pilih. Silakan ubah pilihan filter Anda.")
+else:
+    # --- Ringkasan Metrik Utama (KPIs) ---
+    total_posts = len(df_filtered)
+    total_engagements = int(df_filtered['Engagements'].sum())
+    avg_engagements = df_filtered['Engagements'].mean()
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric(label="Total Posts", value=f"{total_posts:,}")
+    with col2:
+        st.metric(label="Total Engagements", value=f"{total_engagements:,}")
+    with col3:
+        st.metric(label="Rata-rata Engagement/Post", value=f"{avg_engagements:,.2f}")
+
+    st.markdown("---")
+
+    # --- Membuat TABS untuk visualisasi yang lebih rapi ---
+    tab1, tab2, tab3 = st.tabs(["📈 Analisis Umum", "🧑‍💻 Analisis Detail", "📄 Data Mentah"])
+
+    with tab1:
+        st.subheader("Tren Engagement dari Waktu ke Waktu")
+        engagement_over_time = df_filtered.groupby('Date')['Engagements'].sum().reset_index()
+        fig_time = px.line(engagement_over_time, x='Date', y='Engagements', title='Total Engagement Harian')
+        st.plotly_chart(fig_time, use_container_width=True)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Distribusi Sentimen")
+            sentiment_dist = df_filtered['Sentiment'].value_counts().reset_index()
+            fig_pie = px.pie(sentiment_dist, names='Sentiment', values='count', 
+                             title='Proporsi Sentimen Post', hole=0.4,
+                             color_discrete_map={'Positive':'#2ca02c', 'Neutral':'#ff7f0e', 'Negative':'#d62728'})
+            st.plotly_chart(fig_pie, use_container_width=True)
+
+        with col2:
+            st.subheader("Engagement per Platform")
+            platform_engagement = df_filtered.groupby('Platform')['Engagements'].sum().sort_values(ascending=False).reset_index()
+            fig_bar_platform = px.bar(platform_engagement, x='Platform', y='Engagements', 
+                                      title='Total Engagement Berdasarkan Platform', text_auto=True)
+            st.plotly_chart(fig_bar_platform, use_container_width=True)
+
+    with tab2:
+        st.subheader("Analisis Performa Berdasarkan Kategori")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Top Influencer berdasarkan Engagement")
+            influencer_engagement = df_filtered.groupby('Influencer')['Engagements'].sum().sort_values(ascending=False).reset_index()
+            fig_influencer = px.bar(influencer_engagement.head(10), y='Influencer', x='Engagements', 
+                                    orientation='h', title='Top 10 Influencer dengan Engagement Tertinggi', text_auto='.2s')
+            fig_influencer.update_layout(yaxis={'categoryorder':'total ascending'})
+            st.plotly_chart(fig_influencer, use_container_width=True)
+
+        with col2:
+            st.subheader("Engagement per Tipe Post")
+            post_type_engagement = df_filtered.groupby('Post_Type')['Engagements'].sum().sort_values(ascending=False).reset_index()
+            fig_post_type = px.bar(post_type_engagement, x='Post_Type', y='Engagements', 
+                                   title='Total Engagement Berdasarkan Tipe Post', text_auto='.2s')
+            st.plotly_chart(fig_post_type, use_container_width=True)
+
+        st.subheader("Engagement per Lokasi")
+        location_engagement = df_filtered.groupby('Location')['Engagements'].sum().sort_values(ascending=False).reset_index()
+        fig_location = px.bar(location_engagement, x='Location', y='Engagements', 
+                              title='Total Engagement Berdasarkan Lokasi', text_auto='.2s')
+        st.plotly_chart(fig_location, use_container_width=True)
+
+    with tab3:
+        st.subheader("Data Mentah Sesuai Filter")
+        st.markdown("Anda dapat mengurutkan data dengan mengklik header kolom.")
+        st.dataframe(df_filtered)
