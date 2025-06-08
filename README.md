@@ -16,9 +16,8 @@ Ini adalah aplikasi dashboard interaktif berbasis web yang dirancang untuk menga
 
 Anda dapat mengakses dan mencoba langsung aplikasi dashboard yang telah di-deploy melalui link berikut:
 
-**[Klik di sini untuk membuka aplikasi]([https://uas-mi-idbikh4zfct5waxctfcghy.streamlit.app/])**
+**[https://uas-mi-idbikh4zfct5waxctfcghy.streamlit.app/]([https://uas-mi-idbikh4zfct5waxctfcghy.streamlit.app/])**
 
-*(Catatan: Ganti `[LINK_APLIKASI_STREAMLIT_ANDA]` dengan URL publik dari Streamlit Community Cloud Anda setelah deploy.)*
 
 ---
 
